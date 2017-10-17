@@ -1,6 +1,6 @@
 package fr.univtln.groupe1.metier;
 
-public class Pokemon {
+public class Pokemon{
     private String espece;
     private String name;
     private int xp;
