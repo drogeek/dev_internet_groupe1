@@ -13,3 +13,4 @@ Pour ajouter SonarQube à IntelliJ:
   - Choisir SonarQube
   - Ajouter le serveur avec l'URL précédemment utiliser
   - Saisir ensuite le token généré précédément
+
