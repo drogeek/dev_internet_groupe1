@@ -125,3 +125,4 @@ public class Pokemon {
                 + " \n taille: " + size;
     }
 }
+

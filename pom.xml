@@ -5,7 +5,7 @@
     <properties>
         <!-- Le nom court du projet a utiliser pour github -->
         <projectShortName>dev_internet_groupe1</projectShortName>
-        <github.account>dptinfoutln</github.account>
+        <github.account>drogeek</github.account>
         <!-- utln login for nexus (maven and docker ) repository on lsis -->
         <lsisnexus.login>yann-deshors@etud.univ-tln.fr</lsisnexus.login>
         <!-- the default Main class -->
@@ -13,6 +13,13 @@
     </properties>
     <!-- ADAPTER LES PROPRIETES SUIVANTES -->
 
+	<distributionManagement> 
+		<repository> 
+			<id>bintray-drogeek-d35-mvn</id> 
+			<name>drogeek-d35-mvn</name> 
+			<url>https://api.bintray.com/maven/drogeek/d35-mvn/dev_internet_groupe1/;publish=1</url> 
+		</repository> 
+	</distributionManagement>
     <repositories>
         <repository>
             <snapshots>
@@ -130,5 +137,13 @@
             <artifactId>validation-api</artifactId>
             <version>2.0.0.Final</version>
         </dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.18</version>
+			<scope>provided</scope>
+		</dependency>
+
     </dependencies>
 </project>

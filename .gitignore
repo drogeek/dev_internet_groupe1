@@ -41,4 +41,5 @@ proguard/
 
 target/*
 *.swp
+*.swo
 .idea/*

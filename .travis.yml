@@ -1,0 +1,49 @@
+language: bash
+sudo: required
+cache:
+  directories:
+  - "$HOME/.m2/repository"
+  - "$HOME/.sonar/cache"
+before_install:
+- |
+  if [[ "${TRAVIS_COMMIT_MESSAGE}" == "[gitflow]"* ]] && [[ "${TRAVIS_BRANCH}" != v[0-9]* ]]; then
+    travis_terminate 0
+  fi
+before_script:
+- cp .travis.settings.xml $HOME/.m2/settings.xml
+script:
+- |
+  if [[ "${TRAVIS_BRANCH}" == release-* ]]; then
+    QUALIFIER=-frozen-${TRAVIS_BUILD_NUMBER}
+  elif [[ "${TRAVIS_BRANCH}" == "development" ]]; then
+    QUALIFIER=-dev-${TRAVIS_BUILD_NUMBER}
+  elif [[ "${TRAVIS_BRANCH}" == v[0-9]* ]]; then
+    QUALIFIER=""
+  else
+    QUALIFIER=-${TRAVIS_BRANCH}-${TRAVIS_BUILD_NUMBER}
+  fi && ./.travis.scripts/mvn.sh build-helper:parse-version versions:set -DgenerateBackupPoms=false -DnewVersion='${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}'${QUALIFIER}
+- "./.travis.scripts/mvn.sh -Dmaven.site.skip=true clean verify -B -e -V"
+after_success:
+- |
+  if [[ "${TRAVIS_BRANCH}" == v[0-9]* ]] || [[ "${TRAVIS_BRANCH}" == release-* ]] || [[ "${TRAVIS_BRANCH}" == "development" ]]; then
+    ./.travis.scripts/mvn.sh sonar:sonar
+  fi
+- |
+  if [[ "${TRAVIS_BRANCH}" == v[0-9]* ]]; then
+    ./.travis.scripts/mvn.sh -P github-site site  fi
+deploy:
+  provider: script
+  script: "./.travis.scripts/mvn.sh -Dmaven.site.skip=true -P bintray-drogeek-d35-mvn
+    deploy"
+  skip_cleanup: true
+  on:
+    all_branches: true
+branches:
+  except:
+  - gh-pages
+  - master
+env:
+  matrix:
+    secure: pm9kbNhz1wYBHsmjyQHvMWdw1ljm3hxq4Gevr0mNYUqfwOsvQMdI00zev4z/tjwufZ7/sfb4X3JL5NQg+aOY0jzSG+7xn9Bz/FMj/09Y9g/2Vo2K1mopbi/ASM8iFkoRQbM2A0mdtAqaUioAahzeZlDCAaLaYNgFBBZYqWBArBAT/xDK5qnTciTfhLkMw1+v9abNJrV9OUW/Alu12EFX/+cGTqY/ZBfPJQoU7TcDLrEkTPzomsFaW0MziY6y/NzufsZd5q3TI0rt5nf1HMFZzgL64/OKD/I8gzuoRT66wQeuhnEkL3GDrddde6WPbdPGE7KXX91upLv2dxwF/W6VgItTZtfP0iiDp6lHEqeq9M8XuQoxmOK5Fe8zD2CAvsI15gha0unzuXvERGh2jtAvHyPjkqjN874zVkd3L93hQV0LuvJGyjzn5BAFX0hA6y7b2lblozt1Z5mPJ6h5PMfbaPgMLx6xSvSXDkBLqf5q8nXoIPAyAgI2dws7d+tfZ9nJXWyhY9nxlZ55+0SGBocOJ1yQ3iwGrvVWVyoFxGHdtMLuiWF5BTMDotCZs2HFtcDnmhx9Dj2guoaNIwJ+EQJzAzuXDsCzKb6eZSfrIIftItKAwRQGzUURBM3u55UYnCxb6rPnWfEfR7INiaftfLbg+LfXLXFlIqqtLDfnetG+iCI=
+  slack:
+    secure: XxAJNBEQCR+6Ww1UsR3lCvLtgDn/MgxaltRNuPACjzitqJc3tiPt/XGDrQB17RjOCN20D+R5htK8gzVfuqYmQVAZI+jpNF+hKtROyxXpEQAbAQbMx3EbW0kybOlUpZCsOwnuRxsrO/PCxyMkM/7xE9DJQnc83OUIr+gCIy5f5D7lBJpSkqyarWkU7TsnvCSzpC07BpXBaDspriRvmd807dNOljfTsEwjezMAL4CIBsXGOqlqEs/TDmrqt/8W0VnGH+4ThBajr4E0zMhHdtk35YaXquzC8Zq9kVoErMIQo1sh7YAfK+De+pQzznltO4gC7dK+tNqAgbbG7vW8W7f6/c93C+2Dc5/q+1CKDWq9thnvicf0puFUHX/gLxBbuhiOY2hmaYBHfwAbzQHmhtuMQxcOZxtCIGeRR+FEU/xgXhqWtzgch0pTTnaTnT24PiQjvFLoUWmhs5XnM8vOZA2qFA9WebwndLRT3+qLW1p8RxknCEWC8HZu8p0/U9QY86zdLoxrqBZBQKBgRbaRmqpgmsqOy+EyB/iqUUT2EF6EUN2eSgfw8dccq7F+uv8GGxw3VIS31oFHw8qBU6A3tzExYVmwD8tIWKUwH+ZPLOyDQob7lQbmurNV0t1DHmFV4BoL7i5YKMwIOx4qIKAcmCE0rBNT3t4kioJRJJujO9kWNo0=
