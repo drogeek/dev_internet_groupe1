@@ -25,7 +25,7 @@
         <mapping class="fr.univtln.groupe1.metier.Trainer"></mapping>
         <mapping class="fr.univtln.groupe1.metier.Pokemon"></mapping>
         <mapping class="fr.univtln.groupe1.metier.Item"></mapping>
-        <mapping class="fr.univtln.groupe1.ejb.PokemonEJB"></mapping>
+        <mapping class="fr.univtln.groupe1.ejb.TrainerEJB"></mapping>
 
         </session-factory>
 </hibernate-configuration>

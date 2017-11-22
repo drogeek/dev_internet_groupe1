@@ -16,7 +16,7 @@
             <property name="javax.persistence.schema-generation.scripts.create-target" value="sampleCreate.ddl"/>
             <property name="javax.persistence.schema-generation.scripts.drop-target" value="sampleDrop.ddl"/>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost/glassfish"/>
+            <!--<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost/glassfish"/>-->
         </properties>
     </persistence-unit>
 </persistence>

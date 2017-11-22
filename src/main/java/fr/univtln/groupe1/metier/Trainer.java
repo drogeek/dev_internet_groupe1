@@ -1,10 +1,12 @@
 package fr.univtln.groupe1.metier;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@XmlRootElement
 public class Trainer {
 
     @Id
@@ -31,6 +33,18 @@ public class Trainer {
     }
 
     public void addItem(Item item) { this.items.add(item);}
+
+    public List<Pokemon> getPokemons() {
+        return pokemons;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public String getId() {
+        return id;
+    }
 
     @Override
     public String toString() {
