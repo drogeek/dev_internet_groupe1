@@ -1,5 +1,6 @@
 package fr.univtln.groupe1.metier;
 
+import javax.enterprise.inject.Produces;
 import java.util.Random;
 
 
@@ -7,6 +8,7 @@ import java.util.Random;
 
 public class FactoryItem {
 
+    @Produces @Item
     public Item createItem(){
 //        Choix aléatoire du type
 //        TODO
