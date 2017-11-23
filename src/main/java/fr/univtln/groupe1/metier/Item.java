@@ -2,9 +2,12 @@ package fr.univtln.groupe1.metier;
 
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Random;
 
 @Entity
+@XmlRootElement
 public class Item {
 
     public enum Type {FOOD, OBJECT}
@@ -12,6 +15,7 @@ public class Item {
     public enum Name{Salad, Toy}
 
     @GeneratedValue
+    @XmlElement
     @Id
     private int id;
 
