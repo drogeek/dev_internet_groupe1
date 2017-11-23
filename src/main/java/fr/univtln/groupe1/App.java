@@ -1,6 +1,5 @@
 package fr.univtln.groupe1;
 
-import fr.univtln.groupe1.ejb.TrainerEJB;
 import fr.univtln.groupe1.metier.Pokemon;
 import fr.univtln.groupe1.metier.Trainer;
 
@@ -8,12 +7,13 @@ import fr.univtln.groupe1.metier.Trainer;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import javax.inject.Inject;
-import java.util.List;
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Application;
 
 @Singleton
 @Startup
-public class App {
+@ApplicationPath("/")
+public class App extends Application {
 
 
 //    private static final Class[] shadeHack = {org.apache.log4j.RollingFileAppender.class,
@@ -25,17 +25,11 @@ public class App {
 
 //  Log pour tester le deploiement payara
 //  Fonctionnement a verifier
-    @Inject
-TrainerEJB trainerEJB;
 
     @PostConstruct
     public void test2(){
         Trainer trainer = new Trainer("Mario");
         Pokemon pokemon = new Pokemon("Kirby");
         Pokemon pokemon1 = new Pokemon("Yoshi");
-        trainerEJB.addPokemon(pokemon,trainer);
-        List<Pokemon> pokemons = trainerEJB.listPokemon(trainer);
-        trainerEJB.getItem(trainer);
-        trainerEJB.getItem(trainer);
     }
 }
