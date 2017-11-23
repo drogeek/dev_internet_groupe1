@@ -2,6 +2,7 @@ package fr.univtln.groupe1.ejb;
 
 import fr.univtln.groupe1.metier.Item;
 import fr.univtln.groupe1.ejb.Qualifiers.RandomItem;
+import fr.univtln.groupe1.metier.Trainer;
 
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Produces;
@@ -9,9 +10,11 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
 import java.util.Random;
 
 
@@ -19,7 +22,7 @@ import java.util.Random;
 
 @Stateless
 @Path("/item")
-public class FactoryItem {
+public class ItemEJB {
 
 //    @Inject @RandomItem
 //    Item item;
@@ -29,10 +32,12 @@ public class FactoryItem {
 
 //    public void createAndPersistItem(){
 //    }
+//    @Path("{id}")
+//    @GET
+//    public List<Item> getItems(int idTrainer){
+//
+//    }
 
-    @Path("/create")
-    @POST
-    @javax.ws.rs.Produces(MediaType.APPLICATION_XML)
     @Produces @RandomItem
     public Item createItem(){
 //        Choix aléatoire du type
