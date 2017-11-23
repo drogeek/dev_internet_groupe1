@@ -24,7 +24,7 @@ public class TrainerEJB {
     @PersistenceUnit(unitName = "db1")
     private EntityManagerFactory emf;
 
-    FactoryItem factoryItem = new FactoryItem();
+    ItemEJB factoryItem = new ItemEJB();
 
     //    Pour tester
     @Path("/test")
