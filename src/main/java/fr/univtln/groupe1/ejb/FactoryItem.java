@@ -24,8 +24,8 @@ public class FactoryItem {
 //    @Inject @RandomItem
 //    Item item;
 
-    @PersistenceUnit(unitName = "db1")
-    private EntityManagerFactory emf;
+//    @PersistenceUnit(unitName = "db1")
+//    private EntityManagerFactory emf;
 
 //    public void createAndPersistItem(){
 //    }
@@ -53,10 +53,10 @@ public class FactoryItem {
         item.setLevel();
         item.setValue(item.getLevel());
 
-        EntityManager em = emf.createEntityManager();
-        em.persist(item);
-        em.flush();
-        em.refresh(item);
+//        EntityManager em = emf.createEntityManager();
+//        em.persist(item);
+//        em.flush();
+//        em.refresh(item);
         return item;
     }
 }

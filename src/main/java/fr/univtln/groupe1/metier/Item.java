@@ -60,7 +60,7 @@ public class Item {
     public void setValue(int level) {
         Random r = new Random();
         int valueBase = r.nextInt(10)+1;
-        this.value = valueBase*level;
+        this.value = valueBase+10*level;
     }
 
     public Type getType() {
@@ -81,6 +81,10 @@ public class Item {
 
     public void setTrainer(Trainer trainer) {
         this.trainer = trainer;
+    }
+
+    public int getId() {
+        return id;
     }
 
     @Override
