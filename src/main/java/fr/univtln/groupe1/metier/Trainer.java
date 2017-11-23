@@ -9,8 +9,10 @@ import java.util.List;
 @XmlRootElement
 public class Trainer {
 
-    @Id
-    private String id;
+    @Id @GeneratedValue
+    private int id;
+
+    private String name;
 
     @OneToMany (cascade = CascadeType.ALL)
     private List<Pokemon> pokemons;
@@ -19,8 +21,8 @@ public class Trainer {
     @OneToMany (cascade = CascadeType.ALL)
     private List<Item> items;
 
-    public Trainer(String id) {
-        this.id = id;
+    public Trainer(String name) {
+        this.name = name;
         this.pokemons = new ArrayList<Pokemon>(5);
         this.items = new ArrayList<>(10);
     }
@@ -42,7 +44,7 @@ public class Trainer {
         return items;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 

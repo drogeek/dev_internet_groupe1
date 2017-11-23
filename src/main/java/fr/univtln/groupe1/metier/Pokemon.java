@@ -89,7 +89,11 @@ public class Pokemon {
 
     }
 
-//    Egaux si un dresseur a 2 pokemons ayant le meme nom
+    public int getId() {
+        return id;
+    }
+
+    //    Egaux si un dresseur a 2 pokemons ayant le meme nom
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

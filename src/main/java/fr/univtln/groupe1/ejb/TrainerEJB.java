@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 
@@ -28,7 +29,7 @@ public class TrainerEJB {
     //    Pour tester
     @Path("/test")
     @GET
-    @Produces
+    @Produces (MediaType.TEXT_PLAIN)
     public String test(){
         return "Ca fonctionne";
     }
@@ -41,47 +42,49 @@ public class TrainerEJB {
         return trainer.getPokemons();
     }
 
-    //    Ajout un pokemon à un dresseur
-    @Path("/addPokemon")
+//    Creation d'un nouvel entraineur
+    @Path("/newTrainer/{name}")
     @POST
-    public void addPokemon(Pokemon pokemon, Trainer trainer){
+    @Produces(MediaType.APPLICATION_JSON)
+    public Trainer newTrainer(@PathParam("name") String nom){
+        Trainer trainer = new Trainer(nom);
         EntityManager em = emf.createEntityManager();
-        trainer.addPokemon(pokemon);
         em.persist(trainer);
         em.flush();
         em.refresh(trainer);
+        return trainer;
     }
 
-    //    Retourne la liste des items d'un dresseur
-    @Path("/items")
-    @POST
-    @Produces
-    public List<Item> listItem(Trainer trainer){
-        return trainer.getItems();
-    }
 
-    //    Créer un item pour un dresseur
-//    Retourne l'item afin de pouvoir récupérer son id par exemple
-    @Path("/createItem")
-    @POST
-    @Produces
-    public Item getItem(Trainer trainer){
+// AJout d'un item à un dresseur
+    @Path("/createItem/{idTrainer}")
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    public Item createItemTrainer(@PathParam("idTrainer") int idTrainer){
         EntityManager em = emf.createEntityManager();
         Item item = factoryItem.createItem();
+        Trainer trainer = em.find(Trainer.class, idTrainer);
         item.setTrainer(trainer);
-        em.find(Trainer.class, trainer.getId());
         trainer.addItem(item);
         em.flush();
         return item;
     }
 
-//    Suppresion d'un item
-//    @DELETE
-//    @Path("/removeItem{idItem}")
-//    public javax.ws.rs.core.Response removeItem(@PathParam("idItem") int itemId){
-//        EntityManager em = emf.createEntityManager();
-//        em.remove(em.find(Item.class, itemId));
-//        return javax.ws.rs.core.Response.noContent().build();
-//    }
+//    Ajout d'un pokemon à un dresseur
+    @Path("/addPokemon/{namePokemon}/{idTrainer}")
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    public Pokemon addPokemonTrainer(@PathParam("idTrainer") int idTrainer, @PathParam("namePokemon") String namePokemon){
+        EntityManager em = emf.createEntityManager();
+        Pokemon pokemon = new Pokemon(namePokemon);
+//        Query q = em.createQuery("SELECT p FROM Trainer p where p.id=:valeur").setParameter("valeur", idTrainer);
+//        Trainer trainer = (Trainer) q.getResultList().get(0);
+        Trainer trainer = em.find(Trainer.class, idTrainer);
+        pokemon.setTrainer(trainer);
+        trainer.addPokemon(pokemon);
+        em.flush();
+        return pokemon;
+    }
+
 
 }
