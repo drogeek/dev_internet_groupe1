@@ -46,8 +46,7 @@ public class TrainerEJB {
         EntityManager em = emf.createEntityManager();
         TypedQuery<Pokemon> query = em.createNamedQuery("FIND POKEMONS_TRAINER", Pokemon.class)
                 .setParameter("idTrainer", idTrainer);
-        List<Pokemon> pokemons = query.getResultList();
-        return pokemons;
+        return query.getResultList();
     }
 
 //    Creation d'un nouvel entraineur
@@ -91,5 +90,42 @@ public class TrainerEJB {
         return pokemon;
     }
 
+//    Pret d'un pokemon entre dresseurs
+//    Le nom du pokemon est unique dans la base de données
+
+    @Path("/lend/{idTrainerDst}/{idPokemon}")
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    public Pokemon lendPokemon( @PathParam("idTrainerDst") int idTrainerDst, @PathParam("idPokemon")int idPokemon){
+        EntityManager em = emf.createEntityManager();
+        Pokemon pokemon = em.find(Pokemon.class, idPokemon);
+        Trainer trainerDst = em.find(Trainer.class, idTrainerDst);
+//        Véification si il s'agit d'un retour de pret
+//        Suppression du pokemon préter de la liste des pokemon de l'emprunteur
+        if(pokemon.getTrainer()==trainerDst){
+            Trainer oldLendTrainer = em.find(Trainer.class, pokemon.getTrainerLend().getId());
+            oldLendTrainer.delPokemon(pokemon);
+            pokemon.setTrainerLend(null);
+
+        }
+        else if (pokemon.getTrainerLend()!=null){
+//            On n'a pas le droit de préter un pokémon déjà préter
+//            On générera une erreur
+            System.err.println("Erreur, ce pokemon ne vous appartient pas");
+        }
+        else {
+            pokemon.setTrainerLend(trainerDst);
+            trainerDst.addPokemon(pokemon);
+        }
+        return pokemon;
+    }
+
+//    Supression d'un trainer
+    @Path("/delTrainer/{idTrainer}")
+    @DELETE
+    public void delTrainer(@PathParam("idTrainer") int idTrainer){
+        EntityManager em = emf.createEntityManager();
+        em.remove(em.find(Trainer.class, idTrainer));
+    }
 
 }

@@ -31,6 +31,10 @@ public class Pokemon {
     @JsonIgnore
     private Trainer trainer;
 
+//    Trainer à qui le pokemon est préer
+    @OneToOne
+    private Trainer trainerLend = null;
+
 //    TODO
 //    Rajouter le type espece
 //    Fonction ajoutant/enlevant pourcentage niveau
@@ -47,6 +51,7 @@ public class Pokemon {
     @Getter @Setter
     @XmlElement
     private int levelHunger;
+
 
     public Pokemon(){}
     public Pokemon(String nom) {
@@ -107,6 +112,18 @@ public class Pokemon {
 
     public int getId() {
         return id;
+    }
+
+    public Trainer getTrainer() {
+        return trainer;
+    }
+
+    public Trainer getTrainerLend() {
+        return trainerLend;
+    }
+
+    public void setTrainerLend(Trainer trainerLend) {
+        this.trainerLend = trainerLend;
     }
 
     //    Egaux si un dresseur a 2 pokemons ayant le meme nom

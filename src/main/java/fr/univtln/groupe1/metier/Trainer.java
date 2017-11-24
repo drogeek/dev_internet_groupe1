@@ -38,6 +38,8 @@ public class Trainer {
         this.pokemons.add(pokemon);
     }
 
+    public void delPokemon(Pokemon pokemon) {this.pokemons.remove(pokemon);}
+
     public void addItem(Item item) { this.items.add(item);}
 
     public List<Pokemon> getPokemons() {
