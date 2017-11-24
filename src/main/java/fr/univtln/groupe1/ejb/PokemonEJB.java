@@ -12,7 +12,6 @@ import javax.ws.rs.NotFoundException;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import java.util.List;
-import java.util.stream.Stream;
 
 @Stateless
 @Path("/pokemon")

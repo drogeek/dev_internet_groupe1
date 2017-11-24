@@ -1,6 +1,9 @@
 package fr.univtln.groupe1.metier;
 
-import javax.enterprise.inject.Default;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.Singular;
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -11,6 +14,7 @@ import java.util.List;
 @XmlRootElement
 @NamedQuery(name="FIND POKEMONS_TRAINER", query="select p from Trainer t , t.pokemons p where t.id = :idTrainer")
 @NamedQuery(name="DEL_TRAINER", query="DELETE from Trainer t where t.id=:valeur")
+@NoArgsConstructor
 public class Trainer {
 
     @Id @GeneratedValue
@@ -21,20 +25,15 @@ public class Trainer {
     private String name;
 
     @OneToMany (cascade = CascadeType.ALL)
-    private List<Pokemon> pokemons;
+    @Singular private List<Pokemon> pokemons;
 
 //    Représente le "coffre" du dresseur
     @OneToMany (cascade = CascadeType.ALL)
-    private List<Item> items;
+    @Singular private List<Item> items;
 
-    public Trainer(String name) {
+    @Builder
+    public Trainer(String name){
         this.name = name;
-        this.pokemons = new ArrayList<Pokemon>(5);
-        this.items = new ArrayList<>(10);
-    }
-
-    public Trainer(){
-        this.name=null;
         this.pokemons = new ArrayList<Pokemon>(5);
         this.items = new ArrayList<>(10);
     }

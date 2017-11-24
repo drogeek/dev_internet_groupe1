@@ -1,5 +1,6 @@
 package fr.univtln.groupe1.metier;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @XmlRootElement
 @NamedQuery(name="FIND_ALL", query="select p from Pokemon p")
+@NoArgsConstructor
 public class Pokemon {
 
     public static final int VALUE_MAX  = 100;
@@ -31,7 +33,6 @@ public class Pokemon {
     @JsonIgnore
     private Trainer trainer;
 
-//    Trainer à qui le pokemon est préer
     @OneToOne
     private Trainer trainerLend = null;
 
@@ -52,8 +53,7 @@ public class Pokemon {
     @XmlElement
     private int levelHunger;
 
-
-    public Pokemon(){}
+    @Builder
     public Pokemon(String nom) {
         this.nom = nom;
         this.levelLife = VALUE_MAX;

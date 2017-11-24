@@ -4,13 +4,15 @@ import fr.univtln.groupe1.metier.Item;
 import fr.univtln.groupe1.metier.Pokemon;
 import fr.univtln.groupe1.metier.Trainer;
 
-import javax.ejb.Singleton;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
+import java.util.logging.Logger;
 
 
 @javax.persistence.Table(name = "trainer", catalog = "db1", schema = "public")
@@ -19,6 +21,8 @@ import java.util.List;
 @javax.ws.rs.Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
 @javax.ws.rs.Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
 public class TrainerEJB {
+
+    private static Logger logger =Logger.getLogger(TrainerEJB.class.getName());
 
     @PersistenceContext(unitName = "db1")
     private EntityManager em;
@@ -47,8 +51,7 @@ public class TrainerEJB {
     @Path("/newTrainer/{name}")
     @POST
     public Trainer newTrainer(@PathParam("name") String nom){
-        Trainer trainer = new Trainer(nom);
-        trainer.setName(nom);
+        Trainer trainer = Trainer.builder().name(nom).build();
         em.persist(trainer);
         em.flush();
         em.refresh(trainer);
@@ -73,7 +76,7 @@ public class TrainerEJB {
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     public Pokemon addPokemonTrainer(@PathParam("idTrainer") int idTrainer, @PathParam("namePokemon") String namePokemon){
-        Pokemon pokemon = new Pokemon(namePokemon);
+        Pokemon pokemon = Pokemon.builder().nom(namePokemon).build();
         Trainer trainer = em.find(Trainer.class, idTrainer);
         pokemon.setTrainer(trainer);
         trainer.addPokemon(pokemon);
@@ -99,9 +102,9 @@ public class TrainerEJB {
 
         }
         else if (pokemon.getTrainerLend()!=null){
-//            On n'a pas le droit de préter un pokémon déjà préter
+//            On n'a pas le droit de préter un pokémon déjà preté
 //            On générera une erreur
-            System.err.println("Erreur, ce pokemon ne vous appartient pas");
+            logger.info("Cette opération n'est pas permise");
         }
         else {
             pokemon.setTrainerLend(trainerDst);

@@ -42,6 +42,8 @@ public class Test {
     public void test2(){
         trainerEJB.newTrainer("Sasha");
         trainerEJB.newTrainer("Pierre");
+        trainerEJB.addPokemonTrainer(1, "pikachu");
+        trainerEJB.createItemTrainer(1);
 //        trainerEJB.delTrainer(1);
 //        Pokemon pokemon1 = new Pokemon("Yoshi");
 //        trainerEJB.removeItem(item2.getId());
