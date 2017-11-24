@@ -1,5 +1,6 @@
 package fr.univtln.groupe1.metier;
 
+import javax.enterprise.inject.Default;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -9,6 +10,7 @@ import java.util.List;
 @Entity
 @XmlRootElement
 @NamedQuery(name="FIND POKEMONS_TRAINER", query="select p from Trainer t , t.pokemons p where t.id = :idTrainer")
+@NamedQuery(name="DEL_TRAINER", query="DELETE from Trainer t where t.id=:valeur")
 public class Trainer {
 
     @Id @GeneratedValue
@@ -31,7 +33,11 @@ public class Trainer {
         this.items = new ArrayList<>(10);
     }
 
-    public Trainer(){}
+    public Trainer(){
+        this.name=null;
+        this.pokemons = new ArrayList<Pokemon>(5);
+        this.items = new ArrayList<>(10);
+    }
 
     public void addPokemon(Pokemon pokemon)
     {
@@ -48,6 +54,10 @@ public class Trainer {
 
     public List<Item> getItems() {
         return items;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getId() {

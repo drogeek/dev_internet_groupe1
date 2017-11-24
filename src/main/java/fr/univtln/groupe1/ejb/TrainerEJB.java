@@ -7,10 +7,7 @@ import fr.univtln.groupe1.metier.Trainer;
 import javax.ejb.Singleton;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
@@ -21,12 +18,10 @@ import java.util.List;
 @Path("/trainer")
 @javax.ws.rs.Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
 @javax.ws.rs.Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-//Une seul instance pour l'instant :)
-@Singleton
 public class TrainerEJB {
 
-    @PersistenceUnit(unitName = "db1")
-    private EntityManagerFactory emf;
+    @PersistenceContext(unitName = "db1")
+    private EntityManager em;
 
     @Inject
     ItemEJB factoryItem;
@@ -43,7 +38,6 @@ public class TrainerEJB {
     @Path("/{idTrainer}/pokemons")
     @GET
     public List<Pokemon> listPokemon(@PathParam("idTrainer") int idTrainer){
-        EntityManager em = emf.createEntityManager();
         TypedQuery<Pokemon> query = em.createNamedQuery("FIND POKEMONS_TRAINER", Pokemon.class)
                 .setParameter("idTrainer", idTrainer);
         return query.getResultList();
@@ -54,7 +48,7 @@ public class TrainerEJB {
     @POST
     public Trainer newTrainer(@PathParam("name") String nom){
         Trainer trainer = new Trainer(nom);
-        EntityManager em = emf.createEntityManager();
+        trainer.setName(nom);
         em.persist(trainer);
         em.flush();
         em.refresh(trainer);
@@ -66,7 +60,6 @@ public class TrainerEJB {
     @Path("/{idTrainer}/createItem")
     @PUT
     public Item createItemTrainer(@PathParam("idTrainer") int idTrainer){
-        EntityManager em = emf.createEntityManager();
         Item item = factoryItem.createItem();
         Trainer trainer = em.find(Trainer.class, idTrainer);
         item.setTrainer(trainer);
@@ -80,10 +73,7 @@ public class TrainerEJB {
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     public Pokemon addPokemonTrainer(@PathParam("idTrainer") int idTrainer, @PathParam("namePokemon") String namePokemon){
-        EntityManager em = emf.createEntityManager();
         Pokemon pokemon = new Pokemon(namePokemon);
-//        Query q = em.createQuery("SELECT p FROM Trainer p where p.id=:valeur").setParameter("valeur", idTrainer);
-//        Trainer trainer = (Trainer) q.getResultList().get(0);
         Trainer trainer = em.find(Trainer.class, idTrainer);
         pokemon.setTrainer(trainer);
         trainer.addPokemon(pokemon);
@@ -98,7 +88,6 @@ public class TrainerEJB {
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     public Pokemon lendPokemon( @PathParam("idTrainerDst") int idTrainerDst, @PathParam("idPokemon")int idPokemon){
-        EntityManager em = emf.createEntityManager();
         Pokemon pokemon = em.find(Pokemon.class, idPokemon);
         Trainer trainerDst = em.find(Trainer.class, idTrainerDst);
 //        Véification si il s'agit d'un retour de pret
@@ -125,8 +114,8 @@ public class TrainerEJB {
     @Path("/delTrainer/{idTrainer}")
     @DELETE
     public void delTrainer(@PathParam("idTrainer") int idTrainer){
-        EntityManager em = emf.createEntityManager();
-        em.remove(em.find(Trainer.class, idTrainer));
+        TypedQuery<Trainer> q = em.createNamedQuery("DEL_TRAINER", Trainer.class).setParameter("valeur", idTrainer);
+        q.executeUpdate();
     }
 
 }

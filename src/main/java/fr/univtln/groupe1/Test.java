@@ -40,13 +40,11 @@ public class Test {
 
     @PostConstruct
     public void test2(){
-        Trainer trainer = new Trainer("Mario");
-        Pokemon pokemon = new Pokemon("Kirby");
-        Trainer trainer1 = new Trainer("Luigi");
-        Pokemon pokemon1 = new Pokemon("Yoshi");
+        trainerEJB.newTrainer("Sasha");
+        trainerEJB.newTrainer("Pierre");
+//        trainerEJB.delTrainer(1);
 //        Pokemon pokemon1 = new Pokemon("Yoshi");
 //        trainerEJB.removeItem(item2.getId());
-        System.out.println(item.toString());
 
 //        List<Pokemon> pokemons = trainerEJB.listPokemon(trainer);
 //        trainerEJB.getItem(trainer);
