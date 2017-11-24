@@ -78,6 +78,7 @@ public class TrainerEJB {
 //    Ajout d'un pokemon à un dresseur
     @Path("/{idTrainer}/addPokemon/{namePokemon}")
     @PUT
+    @Produces(MediaType.APPLICATION_JSON)
     public Pokemon addPokemonTrainer(@PathParam("idTrainer") int idTrainer, @PathParam("namePokemon") String namePokemon){
         EntityManager em = emf.createEntityManager();
         Pokemon pokemon = new Pokemon(namePokemon);
