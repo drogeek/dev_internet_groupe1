@@ -1,5 +1,7 @@
 package fr.univtln.groupe1;
 
+import fr.univtln.groupe1.ejb.ItemEJB;
+import fr.univtln.groupe1.ejb.PokemonEJB;
 import fr.univtln.groupe1.ejb.Qualifiers.RandomItem;
 import fr.univtln.groupe1.ejb.TrainerEJB;
 import fr.univtln.groupe1.metier.Item;
@@ -10,7 +12,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
-import javax.ws.rs.Path;
 
 @Singleton
 @Startup
@@ -27,6 +28,12 @@ public class Test {
 
     @Inject
     TrainerEJB trainerEJB;
+
+    @Inject
+    ItemEJB itemEJB;
+
+    @Inject
+    PokemonEJB pokemonEJB;
 
     @Inject @RandomItem
     Item item;
