@@ -1,35 +1,48 @@
 package fr.univtln.groupe1.metier;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @XmlRootElement
+@NamedQuery(name="FIND_ALL", query="select p from Pokemon p")
 public class Pokemon {
 
-    private static final int VALUE_MAX  = 100;
+    public static final int VALUE_MAX  = 100;
 
     @GeneratedValue
     @Id
     @XmlElement
+    @Getter
     private int id;
+
     @XmlElement
+    @Getter @Setter
     private String nom;
 
     @ManyToOne
+    @Getter @Setter
     private Trainer trainer;
 
 //    TODO
 //    Rajouter le type espece
 //    Fonction ajoutant/enlevant pourcentage niveau
 
+    @XmlElement
+    @Getter @Setter
     private int levelLife;
+    @XmlElement
+    @Getter @Setter
     private int levelFun;
+    @XmlElement
+    @Getter @Setter
     private int levelAffection;
+    @XmlElement
+    @Getter @Setter
     private int levelHunger;
 
     public Pokemon(){}
