@@ -45,10 +45,6 @@ public class Test {
         Trainer trainer1 = new Trainer("Luigi");
         Pokemon pokemon1 = new Pokemon("Yoshi");
 //        Pokemon pokemon1 = new Pokemon("Yoshi");
-        trainerEJB.addPokemon(pokemon,trainer);
-        trainerEJB.addPokemon(pokemon1, trainer1);
-        Item item1 = trainerEJB.getItem(trainer1);
-        Item item2 = trainerEJB.getItem(trainer1);
 //        trainerEJB.removeItem(item2.getId());
         System.out.println(item.toString());
 
