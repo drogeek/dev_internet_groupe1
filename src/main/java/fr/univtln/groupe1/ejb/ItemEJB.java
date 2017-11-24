@@ -10,10 +10,10 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+import javax.persistence.Query;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Random;
 
@@ -22,13 +22,14 @@ import java.util.Random;
 
 @Stateless
 @Path("/item")
+@javax.ws.rs.Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
 public class ItemEJB {
 
 //    @Inject @RandomItem
 //    Item item;
 
-//    @PersistenceUnit(unitName = "db1")
-//    private EntityManagerFactory emf;
+    @PersistenceUnit(unitName = "db1")
+    private EntityManagerFactory emf;
 
 //    public void createAndPersistItem(){
 //    }
@@ -37,6 +38,16 @@ public class ItemEJB {
 //    public List<Item> getItems(int idTrainer){
 //
 //    }
+
+    @Path("{id}")
+    @GET
+    public Response getItem( @PathParam("id") int id){
+        EntityManager em = emf.createEntityManager();
+        Item item = em.find(Item.class, id);
+        if(item == null)
+            throw new NotFoundException();
+        return Response.ok(item).build();
+    }
 
     @Produces @RandomItem
     public Item createItem(){
