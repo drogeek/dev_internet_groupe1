@@ -1,7 +1,9 @@
 package fr.univtln.groupe1.metier;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
@@ -16,33 +18,34 @@ public class Pokemon {
 
     @GeneratedValue
     @Id
-    @XmlElement
     @Getter
+    @XmlElement
     private int id;
 
-    @XmlElement
     @Getter @Setter
+    @XmlElement
     private String nom;
 
     @ManyToOne
     @Getter @Setter
+    @JsonIgnore
     private Trainer trainer;
 
 //    TODO
 //    Rajouter le type espece
 //    Fonction ajoutant/enlevant pourcentage niveau
 
-    @XmlElement
     @Getter @Setter
+    @XmlElement
     private int levelLife;
-    @XmlElement
     @Getter @Setter
+    @XmlElement
     private int levelFun;
-    @XmlElement
     @Getter @Setter
+    @XmlElement
     private int levelAffection;
-    @XmlElement
     @Getter @Setter
+    @XmlElement
     private int levelHunger;
 
     public Pokemon(){}
