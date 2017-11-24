@@ -6,9 +6,11 @@ import fr.univtln.groupe1.metier.Trainer;
 
 import javax.ejb.Singleton;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
@@ -17,6 +19,8 @@ import java.util.List;
 @javax.persistence.Table(name = "trainer", catalog = "db1", schema = "public")
 @Stateless
 @Path("/trainer")
+@javax.ws.rs.Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+@javax.ws.rs.Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
 //Une seul instance pour l'instant :)
 @Singleton
 public class TrainerEJB {
@@ -24,7 +28,8 @@ public class TrainerEJB {
     @PersistenceUnit(unitName = "db1")
     private EntityManagerFactory emf;
 
-    ItemEJB factoryItem = new ItemEJB();
+    @Inject
+    ItemEJB factoryItem;
 
     //    Pour tester
     @Path("/test")
@@ -35,17 +40,19 @@ public class TrainerEJB {
     }
 
     //    Retourne la liste des pokemons d'un dresseur
-    @Path("/pokemon")
-    @POST
-    @Produces
-    public List<Pokemon> listPokemon(Trainer trainer){
-        return trainer.getPokemons();
+    @Path("/{idTrainer}/pokemons")
+    @GET
+    public List<Pokemon> listPokemon(@PathParam("idTrainer") int idTrainer){
+        EntityManager em = emf.createEntityManager();
+        TypedQuery<Pokemon> query = em.createNamedQuery("FIND POKEMONS_TRAINER", Pokemon.class)
+                .setParameter("idTrainer", idTrainer);
+        List<Pokemon> pokemons = query.getResultList();
+        return pokemons;
     }
 
 //    Creation d'un nouvel entraineur
     @Path("/newTrainer/{name}")
     @POST
-    @Produces(MediaType.APPLICATION_JSON)
     public Trainer newTrainer(@PathParam("name") String nom){
         Trainer trainer = new Trainer(nom);
         EntityManager em = emf.createEntityManager();
@@ -57,9 +64,8 @@ public class TrainerEJB {
 
 
 // AJout d'un item à un dresseur
-    @Path("/createItem/{idTrainer}")
+    @Path("/{idTrainer}/createItem")
     @PUT
-    @Produces(MediaType.APPLICATION_JSON)
     public Item createItemTrainer(@PathParam("idTrainer") int idTrainer){
         EntityManager em = emf.createEntityManager();
         Item item = factoryItem.createItem();
@@ -71,9 +77,8 @@ public class TrainerEJB {
     }
 
 //    Ajout d'un pokemon à un dresseur
-    @Path("/addPokemon/{namePokemon}/{idTrainer}")
+    @Path("/{idTrainer}/addPokemon/{namePokemon}")
     @PUT
-    @Produces(MediaType.APPLICATION_JSON)
     public Pokemon addPokemonTrainer(@PathParam("idTrainer") int idTrainer, @PathParam("namePokemon") String namePokemon){
         EntityManager em = emf.createEntityManager();
         Pokemon pokemon = new Pokemon(namePokemon);

@@ -1,17 +1,21 @@
 package fr.univtln.groupe1.metier;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @XmlRootElement
+@NamedQuery(name="FIND POKEMONS_TRAINER", query="select p from Trainer t , t.pokemons p where t.id = :idTrainer")
 public class Trainer {
 
     @Id @GeneratedValue
+    @XmlElement
     private int id;
 
+    @XmlElement
     private String name;
 
     @OneToMany (cascade = CascadeType.ALL)
