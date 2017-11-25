@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceUnit;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
@@ -22,13 +23,12 @@ import java.util.Random;
 @javax.ws.rs.Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
 public class ItemEJB {
 
-    @PersistenceUnit(unitName = "db1")
-    private EntityManagerFactory emf;
+    @PersistenceContext(unitName = "db1")
+    private EntityManager em;
 
     @Path("{id}")
     @GET
     public Response getItem( @PathParam("id") int id){
-        EntityManager em = emf.createEntityManager();
         Item item = em.find(Item.class, id);
         if(item == null)
             throw new NotFoundException();
