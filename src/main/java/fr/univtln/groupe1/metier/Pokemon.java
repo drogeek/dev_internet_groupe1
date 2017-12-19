@@ -60,7 +60,7 @@ public class Pokemon {
         this.levelFun = VALUE_MAX;
         this.levelAffection = VALUE_MAX;
 //        Pas d'affection au début
-        this.levelHunger = 0;
+        this.levelHunger = VALUE_MAX;
 
     }
 

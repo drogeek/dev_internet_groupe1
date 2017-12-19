@@ -14,7 +14,6 @@ import java.util.List;
 @XmlRootElement
 @NamedQuery(name="FIND POKEMONS_TRAINER", query="select p from Trainer t , t.pokemons p where t.id = :idTrainer")
 @NamedQuery(name="DEL_TRAINER", query="DELETE from Trainer t where t.id=:valeur")
-@NamedQuery(name="FIND_ALL_TRAINER", query="select t from Trainer t")
 @NoArgsConstructor
 public class Trainer {
 

@@ -46,8 +46,13 @@ public class PokemonEJB {
 
     //TODO : verify that every necessary fields have been decreased
     private void decreaseStatsPokemon(Pokemon pokemon){
-        pokemon.setLevelHunger(pokemon.getLevelHunger()-DECREASE_AMOUNT);
-        pokemon.setLevelAffection(pokemon.getLevelAffection()-DECREASE_AMOUNT);
-        pokemon.setLevelFun(pokemon.getLevelFun()-DECREASE_AMOUNT);
+        if (pokemon.getLevelHunger()>0)
+            pokemon.setLevelHunger(pokemon.getLevelHunger()-DECREASE_AMOUNT);
+        if (pokemon.getLevelAffection()>0)
+            pokemon.setLevelAffection(pokemon.getLevelAffection()-DECREASE_AMOUNT);
+        if (pokemon.getLevelFun()>0)
+            pokemon.setLevelFun(pokemon.getLevelFun()-DECREASE_AMOUNT);
+        if ((pokemon.getLevelHunger()==0) | (pokemon.getLevelAffection()==0) | (pokemon.getLevelFun()==0))
+            pokemon.setLevelLife(pokemon.getLevelLife()-DECREASE_AMOUNT);
     }
 }
