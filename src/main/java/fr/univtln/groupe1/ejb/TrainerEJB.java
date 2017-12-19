@@ -30,6 +30,14 @@ public class TrainerEJB {
     @Inject
     ItemEJB factoryItem;
 
+    @Path("/all")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Trainer> findAll(){
+        TypedQuery<Trainer> query = em.createNamedQuery("FIND_ALL_TRAINER", Trainer.class);
+        return query.getResultList();
+    }
+
     //    Pour tester
     @Path("/test")
     @GET
