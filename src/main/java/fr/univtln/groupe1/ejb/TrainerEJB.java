@@ -48,6 +48,14 @@ public class TrainerEJB {
         return query.getResultList();
     }
 
+    @Path("/{idTrainer}/items")
+    @GET
+    public List<Item> listItem(@PathParam("idTrainer") int idTrainer){
+        TypedQuery<Item> query = em.createNamedQuery("FIND ITEMS_TRAINER", Item.class)
+                .setParameter("idTrainer", idTrainer);
+        return query.getResultList();
+    }
+
 //    Creation d'un nouvel entraineur
     @Path("/newTrainer/{name}")
     @POST
