@@ -7,6 +7,7 @@ import fr.univtln.groupe1.metier.Trainer;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
@@ -71,6 +72,13 @@ public class TrainerEJB {
         return item;
     }
 
+    public void createItemTrainer(Trainer trainer){
+        Item item = factoryItem.createItem();
+        item.setTrainer(trainer);
+        trainer.addItem(item);
+        em.flush();
+    }
+
 //    Ajout d'un pokemon à un dresseur
     @Path("/{idTrainer}/addPokemon/{namePokemon}")
     @PUT
@@ -119,6 +127,23 @@ public class TrainerEJB {
     public void delTrainer(@PathParam("idTrainer") int idTrainer){
         TypedQuery<Trainer> q = em.createNamedQuery("DEL_TRAINER", Trainer.class).setParameter("valeur", idTrainer);
         q.executeUpdate();
+    }
+
+    @Path("/updateItem")
+    @PUT
+    public void updateItem(){
+        TypedQuery<Trainer> query = em.createNamedQuery("FIND_ALL_TRAINER", Trainer.class );
+        List<Trainer> trainers = query.getResultList();
+        trainers.stream().forEach(this::createItemTrainer);
+        em.flush();
+    }
+
+    @Path("/all")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Trainer> allTrainer(){
+        TypedQuery<Trainer> query = em.createNamedQuery("FIND_ALL_TRAINER", Trainer.class );
+        return query.getResultList();
     }
 
 }

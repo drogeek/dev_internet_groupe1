@@ -17,6 +17,7 @@ import java.util.List;
 @Path("/pokemon")
 public class PokemonEJB {
     private final int DECREASE_AMOUNT=1;
+
     @PersistenceUnit(unitName = "db1")
     private EntityManagerFactory emf;
 
